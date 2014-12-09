@@ -9,10 +9,12 @@ red='\e[0;31m'
 green='\e[0;32m'
 NC='\e[0m' # No Color
 
+debug=0
+makefile_path=""
 
 ## HELP ##
 
-function help {
+function show_help {
     echo "help etc"
 }
 
@@ -36,10 +38,20 @@ function precheck {
 }
 ## MAIN ##
 
-if [ -z "$1"  ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]
-then
-  help
-  exit 
-fi  
-
-
+while getopts "hp:" opt; do
+  case "$opt" in
+    h)
+      show_help
+      exit 0
+      ;;
+    p)  
+      makefile_path=$OPTARG
+      ;;
+    '?')
+      show_help >&2
+      exit 1
+      ;;
+    esac
+ done
+ 
+ echo $makefile_path

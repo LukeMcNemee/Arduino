@@ -7,12 +7,10 @@ Morse::Morse() {
 	_variableTwo = 3;
 }
 
-void Morse::methodNumberOne() const {
+void Morse::definePins(int pins) const {
 	// print variable one
-	Serial.println(_variableOne);
 }
 
 void Morse::methodNumberTwo() const {
 	// print variable one
-	Serial.println(_variableTwo);
 }
