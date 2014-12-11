@@ -1,9 +1,9 @@
 #ifndef _MORSE_
 #define _MORSE_
-
+#define RGB
 /**
- * @file MyFirstLib.h
- * @author John Doe
+ * @file Morse.h
+ * @author LukeMcNemee
  * @version 1.0
  */
 
@@ -11,20 +11,33 @@
 
 class Morse {
 
-	public:
+public:
 
-		Morse();
+#ifdef RGB
+    Morse(int red, int green, int blue);
+    void defineColor(int red, int green, int blue);
+#else
+    Morse(int pin);
+#endif
 
-		void definePins(int pins) const;
-		void methodNumberTwo() const;
+    void msg(char *msg);
 
-	private:
 
-		//	VARIABLES
-		uint8_t _variableOne;
-		uint8_t _variableTwo;
+private:
+    //all morse code letters and some extra, number representing length of beep, thus 13 <=> ._ <=> A
+    static const char* code[];
+    //same as code, but in ascii, indexes are equal
+    static const char* ascii;
 
-		//	CONSTANTS
+    static const int dotLength = 200;
+
+#ifdef RGB
+    int pin[3];
+    int color[3];
+#else
+    int pin[1];
+#endif
+
 };
 
 #endif
