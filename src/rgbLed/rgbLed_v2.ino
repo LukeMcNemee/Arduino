@@ -42,7 +42,7 @@ void setup() {
     Serial.println("Hello");
     
 #ifdef RGB
-    morse.defineColor(255,255,255);
+    morse.defineColor(50,0,50);
 #endif
     /* Setup encoder pins as inputs 
     pinMode(ENC_A, INPUT);
@@ -71,10 +71,14 @@ void loop() {
     } 
     switch (pos){
       case  0:
-	morse.msg("SOS");	
+	morse.msg("AHOJ JAK SE MAS?");	
 	
 	break;
       case  1:
+	morse.defineColor(250,0,0);
+	morse.msg("SOS");	
+	
+	break;
       case  2:
 	color(0,0,255);
 	break;

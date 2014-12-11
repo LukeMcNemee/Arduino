@@ -64,15 +64,15 @@ void Morse::msg(char *msg){
             }
 
         } else if(msg[i] == ' '){ //if not found, check if space
-            delay(dotLength*6);
+            delay(dotLength*5);
         } else {
             //else skip and delay
-            delay(dotLength*20);
+            delay(dotLength*10);
         }
         //end letter
-        delay(dotLength*5);
+        delay(dotLength*3);
     }
-    delay(dotLength*5);
+    delay(dotLength*7);
 }
 
 const char* Morse::ascii = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,?'!/()&:;=+-_\"$@";

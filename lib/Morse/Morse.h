@@ -29,7 +29,7 @@ private:
     //same as code, but in ascii, indexes are equal
     static const char* ascii;
 
-    static const int dotLength = 200;
+    static const int dotLength = 250;
 
 #ifdef RGB
     int pin[3];
