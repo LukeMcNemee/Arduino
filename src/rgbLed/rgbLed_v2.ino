@@ -2,17 +2,19 @@
 #include <RotaryEncoder.h>
 
 #define RGB
-#define STATES 20
+#define STATES 24
 
 int globalRed = 0;
 int globalGreen = 0;
 int globalBlue = 0;
-int pos = 0;
+int pos = STATES * 20;
+int interrupt = false;
+
 
 RotaryEncoder encoder(A2, A3);
 
 #ifdef RGB
-Morse morse(9,10,11);
+Morse morse(11,10,9);
 #else
 Morse morse(9);
 #endif
@@ -26,8 +28,10 @@ void color(int red, int green, int blue){
 void fade(int red, int green, int blue){
     for(int i = 255; i >1; i--){
 	color((int)red/i, (int)green/i, (int)blue/i);
-	delay(10);
+	delay((255-i) /8);
+	if (interrupt) return;
     }  
+    delay(100);
 }
 
 
@@ -58,9 +62,12 @@ void setup() {
 // This routine will only be called on any signal change on A2 and A3: exactly where we need to check.
 ISR(PCINT1_vect) {
   encoder.tick(); // just call tick() to check the state.
+  morse.setInterrupt();
+  interrupt = true;
 }
 
 void loop() {
+    encoder.tick();
     color(0,0,0);
     static int pos = 0;
     int newPos = encoder.getPosition();
@@ -68,46 +75,97 @@ void loop() {
       Serial.print(newPos);
       Serial.println();
       pos = newPos % STATES;
-    } 
+    }
     switch (pos){
       case  0:
-	morse.msg("AHOJ JAK SE MAS?");	
-	
+	fade(250,0,0);	
 	break;
       case  1:
-	morse.defineColor(250,0,0);
-	morse.msg("SOS");	
-	
+	fade(0,250,0);	
 	break;
       case  2:
-	color(0,0,255);
+	fade(0,0,250);	
 	break;
       case  3:
+	fade(125,125,0);	
+	break;
       case  4:
+	fade(125,0,125);	
+	break;
       case  5:
-	fade(0, 0, 255);
+	fade(0,125,125);
 	break;
       case  6:
+	morse.defineColor(250,0,0);
+	morse.msg("AHOJ ");	
+	break;
       case  7:
+	morse.defineColor(0,250,0);
+	morse.msg("AHOJ ");	
+	break;
       case  8:
+	morse.defineColor(0,0,250);
+	morse.msg("AHOJ ");	
+	break;
       case  9:
-	color(0,255,0);
+	morse.defineColor(125,125,0);	
+	morse.msg("AHOJ ");
 	break;
-      case 10:
-      case 11:
-      case 12:
-	fade(0, 255, 0);
+      case  10:
+	morse.defineColor(125,0,125);	
+	morse.msg("AHOJ ");
 	break;
-      case 13:
-      case 14:
-      case 15:
-      case 16:
-	color(255,0,0);
+      case  11:
+	morse.defineColor(0,125,125);
+	morse.msg("AHOJ ");
 	break;
-      case 17:
-      case 18:
-      case 19:
-	fade( 255, 0, 0);
+      case  12:
+	morse.defineColor(250,0,0);
+	morse.msg("MILUJI CHEMII ");	
+	break;
+      case  13:
+	morse.defineColor(0,250,0);
+	morse.msg("KOFEIN ");	
+	break;
+      case  14:
+	morse.defineColor(0,0,250);
+	morse.msg("SPIRIT ");	
+	break;
+      case  15:
+	morse.defineColor(125,125,0);	
+	morse.msg("MILUJI CHEMII ");
+	break;
+      case  16:
+	morse.defineColor(125,0,125);	
+	morse.msg("KOFEIN ");
+	break;
+      case  17:
+	morse.defineColor(0,125,125);
+	morse.msg("SPIRIT ");
+	break;
+      case  18:
+	morse.defineColor(250,0,0);
+	morse.msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");	
+	break;
+      case  19:
+	morse.defineColor(0,250,0);
+	morse.msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");	
+	break;
+      case  20:
+	morse.defineColor(0,0,250);
+	morse.msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");	
+	break;
+      case  21:
+	morse.defineColor(125,125,0);	
+	morse.msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");
+	break;
+      case  22:
+	morse.defineColor(125,0,125);	
+	morse.msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");
+	break;
+      case  23:
+	morse.defineColor(0,125,125);
+	morse.msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.");
 	break;
       default:
 	color(255,0,0);
@@ -115,4 +173,14 @@ void loop() {
 	color(0,0,0);
 	delay(10);
     }
+    
+    morse.resetInterrupt();
+    interrupt = false;
 }
+
+//250,0,0 -red 
+//0,250,0 -green
+//0,0,250 -blue
+//125,125,0 - orange
+//125,0,125 - purple 
+//0,125,125 - aqua

@@ -13,6 +13,9 @@ class Morse {
 
 public:
 
+    void setInterrupt();
+    void resetInterrupt();
+
 #ifdef RGB
     Morse(int red, int green, int blue);
     void defineColor(int red, int green, int blue);
@@ -30,6 +33,8 @@ private:
     static const char* ascii;
 
     static const int dotLength = 250;
+
+    bool interrupt;
 
 #ifdef RGB
     int pin[3];
