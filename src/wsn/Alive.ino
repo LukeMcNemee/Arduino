@@ -5,6 +5,8 @@
 int counter = 0; //
 int msgCounter = 0; 
 
+radioUtils ru = radioUtils();
+
 void setup () {
   Serial.begin(57600);
   Serial.println("\n[Alive Send]");
@@ -24,6 +26,8 @@ void loop () {
       //propagate to parent 
       byte header = B00000000;
       //fill header using radioUtils      
+      ru.resetAck(&header);
+      ru.setID(&header, PARENTID);      
       rf12_sendNow(header, (const void*)rf12_data, rf12_len);
     }
   }
@@ -35,8 +39,9 @@ void loop () {
     msgCounter++;
     //send still alive msg
     byte header;
-    //fill header using radioUtils
-    //void* data; 
+    //fill header using radioUtils    
+    ru.resetAck(&header);
+    ru.setID(&header, PARENTID);  
     rf12_sendNow(header, (const void*) &msgCounter, sizeof(counter));
     counter = 0;
   }
