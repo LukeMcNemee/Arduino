@@ -7,15 +7,15 @@ class radioUtils
 public:
     radioUtils();
 
-    int setAck();
+    int setAck(byte* hdr);
 
-    int resetAck();
+    int resetAck(byte* hdr);
 
-    int setBroadcast();
+    int setBroadcast(byte* hdr);
 
-    int setDstID(byte id);
+    int setID(byte* hdr, byte id);
 
-    int getSrcID();
+    int getID(byte* hdr, byte* id);
 };
 
 #endif // RADIOUTILS_H

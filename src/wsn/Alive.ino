@@ -34,9 +34,9 @@ void loop () {
   if(counter%100 == 0){
     msgCounter++;
     //send still alive msg
-    byte header = B00000000;
+    byte header;
     //fill header using radioUtils
-    void* data; 
+    //void* data; 
     rf12_sendNow(header, (const void*) &msgCounter, sizeof(counter));
     counter = 0;
   }
